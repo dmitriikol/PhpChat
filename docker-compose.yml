@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  nginx:
+    container_name: chat_nginx
+    image: nginx
+    depends_on:
+      - php
+    ports:
+    - 45080:80
+    volumes:
+    - ./.docker/nginx:/etc/nginx/conf.d
+    - ./:/code
+    links:
+      - php:php
+
+  php:
+    container_name: chat_php
+    image: php:7.4-fpm
+    build:
+      context: ./.docker/php
+    volumes:
+    - ./:/code
+    links:
+      - postgres:postgres
+
+  postgres:
+    container_name: chat_postgres
+    image: postgres
+    ports:
+    - 35080:5432
+    environment:
+      POSTGRES_DB: chat
+      POSTGRES_USER: chat_user
+      POSTGRES_PASSWORD: chat_password
+
+networks:
+  default:
+    external:
+      name: chat-network
