@@ -1,3 +1,6 @@
+.idea/
+/.docker/nginx/log/*
+!/.docker/nginx/log/.gitkeep
 
 ###> symfony/framework-bundle ###
 /.env.local
